@@ -43,7 +43,6 @@ app.prepare().then(() => {
   })
 
   server.use(router.routes())
-
   server.use(
     createShopifyAuth({
       apiKey: SHOPIFY_API_KEY,
