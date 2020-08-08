@@ -3,16 +3,18 @@ import Head from "next/head";
 import { Page, EmptyState, Layout, Link as PLink } from "@shopify/polaris";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import store from "store-js";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [modal, setModal] = useState(false);
-
+  const router = useRouter();
   const handleResourcePicker = (resources) => {
     const products = resources.selection.map((product) => product.id);
     store.set("productIds", products);
     setModal(false);
     console.log(products);
     console.log(store.get("productIds"));
+    router.push("/create");
   };
 
   return (
@@ -33,7 +35,7 @@ export default function Home() {
           <EmptyState
             heading="Create a sale Banner for a product."
             action={{
-              content: "Add Product",
+              content: "Select Product",
               onAction: () => setModal(true),
             }}
             secondaryAction={{
