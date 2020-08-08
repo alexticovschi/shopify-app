@@ -1,52 +1,49 @@
+import { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import ToastExample from "./myToast";
-import {
-  Avatar,
-  Badge,
-  Page,
-  Button,
-  Thumbnail,
-  DisplayText,
-  CalloutCard,
-  Card,
-  EmptyState,
-  Layout,
-  Frame,
-  Loading,
-  Toast,
-} from "@shopify/polaris";
-
-import styles from "../styles/Home.module.css";
+import { Page, EmptyState, Layout, Link as PLink } from "@shopify/polaris";
+import { ResourcePicker } from "@shopify/app-bridge-react";
+import store from "store-js";
 
 export default function Home() {
+  const [modal, setModal] = useState(false);
+
+  const handleResourcePicker = (resources) => {
+    const products = resources.selection.map((product) => product.id);
+    store.set("productIds", products);
+    setModal(false);
+    console.log(products);
+    console.log(store.get("productIds"));
+  };
+
   return (
     <Page>
       <Head>
         <title>Shopify App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div style={{ height: "100px" }}>
-        <Frame>
-          <Loading />
-        </Frame>
-      </div>
-      <ToastExample />
+      <ResourcePicker
+        resourceType="Product"
+        open={modal}
+        onCancel={() => setModal(false)}
+        showVariants={false}
+        onSelection={(resources) => handleResourcePicker(resources)}
+      />
       <Layout>
         <Layout.Section>
-          <Card title="Order details" sectioned>
-            <p>View a summary of your order man.</p>
-          </Card>
-        </Layout.Section>
-        <Layout.Section secondary>
-          <Card title="Tags" sectioned>
-            <p>Add tags to your order.</p>
-          </Card>
-        </Layout.Section>
-        <Layout.Section>
-          <Card title="Online store dashboard" sectioned>
-            <p>View a summary of your online store’s performance.</p>
-          </Card>
+          <EmptyState
+            heading="Create a sale Banner for a product."
+            action={{
+              content: "Add Product",
+              onAction: () => setModal(true),
+            }}
+            secondaryAction={{
+              content: "Learn more",
+              url: "https://help.shopify.com",
+            }}
+            image="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg"
+          >
+            <p>Create a sale Banner anywhere on your page.</p>
+          </EmptyState>
         </Layout.Section>
       </Layout>
     </Page>
