@@ -17,6 +17,26 @@ import store from "store-js";
 const CreatePage = () => {
   const [modal, setModal] = useState(false);
 
+  const [formState, setFormState] = useState({
+    title: "",
+    percentage: "0",
+  });
+
+  const handleText = (name, text, id) => {
+    console.log(formState);
+    let newState = {
+      [name]: text,
+    };
+    setFormState({
+      ...formState,
+      ...newState,
+    });
+    console.log({
+      ...formState,
+      ...newState,
+    });
+  };
+
   const handleResourcePicker = (resources) => {
     const products = resources.selection.map((product) => product.id);
     store.set("productIds", products);
@@ -48,11 +68,17 @@ const CreatePage = () => {
         >
           <Card sectioned>
             <FormLayout>
-              <TextField type="text" label="Title" onChange={() => {}} />
+              <TextField
+                type="text"
+                label="Title"
+                value={formState.title}
+                onChange={(text, id) => handleText("title", text, id)}
+              />
               <TextField
                 type="text"
                 label="Sale Percentage"
-                onChange={() => {}}
+                value={formState.percentage}
+                onChange={(text, id) => handleText("percentage", text, id)}
               />
             </FormLayout>
           </Card>
