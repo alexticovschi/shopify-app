@@ -10,12 +10,34 @@ import {
   MediaCard,
   PageActions,
   Button,
+  ColorPicker,
+  hsbToRgb,
 } from "@shopify/polaris";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import store from "store-js";
 
 const CreatePage = () => {
   const [modal, setModal] = useState(false);
+  const [textColor, setTextColor] = useState({
+    hue: 120,
+    brightness: 1,
+    saturation: 0,
+  });
+  const [rgbTextColor, setRgbTextColor] = useState({
+    red: 255,
+    green: 255,
+    blue: 255,
+  });
+  const [bgColor, setBgColor] = useState({
+    hue: 0,
+    brightness: 0,
+    saturation: 0,
+  });
+  const [rgbBgColor, setRgbBgColor] = useState({
+    red: 0,
+    green: 0,
+    blue: 0,
+  });
 
   const [formState, setFormState] = useState({
     title: "",
@@ -35,6 +57,17 @@ const CreatePage = () => {
       ...formState,
       ...newState,
     });
+  };
+  const handleTextColor = (color) => {
+    setTextColor(color);
+    setRgbTextColor(hsbToRgb(color));
+    console.log(rgbTextColor);
+  };
+
+  const handleBgColor = (color) => {
+    setBgColor(color);
+    setRgbBgColor(hsbToRgb(color));
+    console.log(rgbBgColor);
   };
 
   const handleResourcePicker = (resources) => {
@@ -80,6 +113,74 @@ const CreatePage = () => {
                 value={formState.percentage}
                 onChange={(text, id) => handleText("percentage", text, id)}
               />
+              <div>
+                <div className="Polaris-Label">
+                  <label
+                    id="Polaris-ColorPickerLabel"
+                    for="Polaris-ColorPickerLabel"
+                    className="Polaris-Label__Text"
+                  >
+                    Select Text Color
+                  </label>
+                </div>
+
+                <div style={{ display: "flex" }}>
+                  <ColorPicker onChange={handleTextColor} color={textColor} />
+                  <div style={{ padding: "0 15px" }}>
+                    <div className="Polaris-Label">
+                      <label
+                        id="Polaris-ColorPickerLabel"
+                        for="Polaris-ColorPickerLabel"
+                        className="Polaris-Label__Text"
+                      >
+                        Selected Text Color
+                      </label>
+                    </div>
+                    <div
+                      style={{
+                        width: "100px",
+                        height: "40px",
+                        border: "1px solid #d6d6d6",
+                        backgroundColor: `rgba(${rgbTextColor.red}, ${rgbTextColor.green}, ${rgbTextColor.blue})`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="Polaris-Label">
+                  <label
+                    id="Polaris-ColorPickerLabel"
+                    for="Polaris-ColorPickerLabel"
+                    className="Polaris-Label__Text"
+                  >
+                    Select Background Color
+                  </label>
+                </div>
+
+                <div style={{ display: "flex" }}>
+                  <ColorPicker onChange={handleBgColor} color={bgColor} />
+                  <div style={{ padding: "0 15px" }}>
+                    <div className="Polaris-Label">
+                      <label
+                        id="Polaris-ColorPickerLabel"
+                        for="Polaris-ColorPickerLabel"
+                        className="Polaris-Label__Text"
+                      >
+                        Selected Background Color
+                      </label>
+                    </div>
+                    <div
+                      style={{
+                        width: "100px",
+                        height: "40px",
+                        border: "1px solid #d6d6d6",
+                        backgroundColor: `rgba(${rgbBgColor.red}, ${rgbBgColor.green}, ${rgbBgColor.blue})`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
             </FormLayout>
           </Card>
         </Layout.AnnotatedSection>
