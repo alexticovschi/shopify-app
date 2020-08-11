@@ -7,16 +7,13 @@ import {
   FormLayout,
   TextField,
   Link as PLink,
-  MediaCard,
   PageActions,
   ColorPicker,
   hsbToRgb,
 } from "@shopify/polaris";
-import { ResourcePicker } from "@shopify/app-bridge-react";
-import store from "store-js";
+import ProductInfo from "../components/ProductInfo";
 
 const CreatePage = () => {
-  const [modal, setModal] = useState(false);
   const [textColor, setTextColor] = useState({
     hue: 120,
     brightness: 1,
@@ -69,13 +66,6 @@ const CreatePage = () => {
     console.log(rgbBgColor);
   };
 
-  const handleResourcePicker = (resources) => {
-    const products = resources.selection.map((product) => product.id);
-    store.set("productIds", products);
-    setModal(false);
-    console.log(store.get("productIds"));
-  };
-
   return (
     <Page
       breadcrumbs={[{ content: "Home", url: "/" }]}
@@ -85,13 +75,6 @@ const CreatePage = () => {
         <title>Shopify App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ResourcePicker
-        resourceType="Product"
-        open={modal}
-        onCancel={() => setModal(false)}
-        showVariants={false}
-        onSelection={(resources) => handleResourcePicker(resources)}
-      />
       <Layout>
         <Layout.AnnotatedSection
           title="Banner Information"
@@ -149,7 +132,7 @@ const CreatePage = () => {
                 <div className="Polaris-Label">
                   <label
                     id="Polaris-ColorPickerLabel"
-                    for="Polaris-ColorPickerLabel"
+                    htmlFor="Polaris-ColorPickerLabel"
                     className="Polaris-Label__Text"
                   >
                     Select Background Color
@@ -162,7 +145,7 @@ const CreatePage = () => {
                     <div className="Polaris-Label">
                       <label
                         id="Polaris-ColorPickerLabel"
-                        for="Polaris-ColorPickerLabel"
+                        htmlFor="Polaris-ColorPickerLabel"
                         className="Polaris-Label__Text"
                       >
                         Selected Background Color
@@ -182,33 +165,7 @@ const CreatePage = () => {
             </FormLayout>
           </Card>
         </Layout.AnnotatedSection>
-        <Layout.AnnotatedSection
-          title="Product Information"
-          description="Create a name for your banner."
-        >
-          <Card sectioned>
-            <MediaCard
-              title="Jordan Shoes"
-              primaryAction={{
-                content: "Change Product",
-                onAction: () => setModal(true),
-              }}
-              description={`Price: £100`}
-              popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
-            >
-              <img
-                alt=""
-                width="100%"
-                height="100%"
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center",
-                }}
-                src="https://burst.shopifycdn.com/photos/smiling-businesswoman-in-office.jpg?width=1850"
-              />
-            </MediaCard>
-          </Card>
-        </Layout.AnnotatedSection>
+        <ProductInfo />
       </Layout>
       <PageActions
         primaryAction={{
