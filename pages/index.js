@@ -1,21 +1,11 @@
-import { useState } from "react";
 import Head from "next/head";
 import { Page, EmptyState, Layout, Link as PLink } from "@shopify/polaris";
-import { ResourcePicker } from "@shopify/app-bridge-react";
-import store from "store-js";
 import { useRouter } from "next/router";
 
 export default function Home() {
-  const [modal, setModal] = useState(false);
   const router = useRouter();
-  const handleResourcePicker = (resources) => {
-    const products = resources.selection.map((product) => product.id);
-    store.set("productIds", products);
-    setModal(false);
-    console.log(products);
-    console.log(store.get("productIds"));
-    router.push("/create");
-  };
+
+  const start = () => router.push("/create");
 
   return (
     <Page>
@@ -23,20 +13,13 @@ export default function Home() {
         <title>Shopify App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ResourcePicker
-        resourceType="Product"
-        open={modal}
-        onCancel={() => setModal(false)}
-        showVariants={false}
-        onSelection={(resources) => handleResourcePicker(resources)}
-      />
       <Layout>
         <Layout.Section>
           <EmptyState
-            heading="Create a sale Banner for a product."
+            heading="Create a Sale Banner for a Product."
             action={{
-              content: "Select Product",
-              onAction: () => setModal(true),
+              content: "Start",
+              onAction: () => start(),
             }}
             secondaryAction={{
               content: "Learn more",
@@ -44,7 +27,7 @@ export default function Home() {
             }}
             image="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg"
           >
-            <p>Create a sale Banner anywhere on your page.</p>
+            <p>Get More Sales With This Banner.</p>
           </EmptyState>
         </Layout.Section>
       </Layout>

@@ -9,7 +9,6 @@ import {
   Link as PLink,
   MediaCard,
   PageActions,
-  Button,
   ColorPicker,
   hsbToRgb,
 } from "@shopify/polaris";
@@ -74,7 +73,6 @@ const CreatePage = () => {
     const products = resources.selection.map((product) => product.id);
     store.set("productIds", products);
     setModal(false);
-    console.log(products);
     console.log(store.get("productIds"));
   };
 
@@ -117,7 +115,7 @@ const CreatePage = () => {
                 <div className="Polaris-Label">
                   <label
                     id="Polaris-ColorPickerLabel"
-                    for="Polaris-ColorPickerLabel"
+                    htmlFor="Polaris-ColorPickerLabel"
                     className="Polaris-Label__Text"
                   >
                     Select Text Color
@@ -130,7 +128,7 @@ const CreatePage = () => {
                     <div className="Polaris-Label">
                       <label
                         id="Polaris-ColorPickerLabel"
-                        for="Polaris-ColorPickerLabel"
+                        htmlFor="Polaris-ColorPickerLabel"
                         className="Polaris-Label__Text"
                       >
                         Selected Text Color
@@ -193,7 +191,7 @@ const CreatePage = () => {
               title="Jordan Shoes"
               primaryAction={{
                 content: "Change Product",
-                onAction: () => {},
+                onAction: () => setModal(true),
               }}
               description={`Price: £100`}
               popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
