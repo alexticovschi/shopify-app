@@ -13,6 +13,8 @@ const { default: createShopifyAuth } = require("@shopify/koa-shopify-auth");
 const { verifyRequest } = require("@shopify/koa-shopify-auth");
 const session = require("koa-session");
 const { SHOPIFY_API_KEY, SHOPIFY_API_SECRET_KEY } = process.env;
+const { default: graphQLProxy } = require("@shopify/koa-shopify-graphql-proxy");
+const { ApiVersion } = require("@shopify/koa-shopify-graphql-proxy");
 
 app.prepare().then(() => {
   const server = new Koa();
@@ -46,7 +48,13 @@ app.prepare().then(() => {
     createShopifyAuth({
       apiKey: SHOPIFY_API_KEY,
       secret: SHOPIFY_API_SECRET_KEY,
-      scopes: ["read_products"],
+      scopes: [
+        "read_products",
+        "write_products",
+        "read_script_tags",
+        "write_script_tags",
+        "read_analytics",
+      ],
       afterAuth(ctx) {
         const { shop, accessToken } = ctx.session;
 
@@ -61,6 +69,7 @@ app.prepare().then(() => {
     })
   );
 
+  server.use(graphQLProxy({ version: ApiVersion.October19 }));
   server.use(verifyRequest());
   server.use(async (ctx) => {
     await handle(ctx.req, ctx.res);
