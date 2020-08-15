@@ -5,6 +5,15 @@ import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 import { Provider } from "@shopify/app-bridge-react";
 import Cookies from "js-cookie";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "/graphql",
+  fetchOptions: {
+    credentials: "include",
+  },
+  cache: new InMemoryCache(),
+});
 
 function MyApp({ Component, pageProps }) {
   const config = {
@@ -20,7 +29,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Provider config={config}>
         <AppProvider i18n={"translations"}>
-          <Component {...pageProps} />
+          <ApolloProvider client={client}>
+            <Component {...pageProps} />
+          </ApolloProvider>
         </AppProvider>
       </Provider>
     </>
